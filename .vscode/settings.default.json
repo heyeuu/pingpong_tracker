@@ -1,0 +1,47 @@
+{
+    "clangd.arguments": [
+        "--header-insertion=never"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "cSpell.words": [
+        "ahrs",
+        "Axisd",
+        "colcon",
+        "dbus",
+        "Eigen",
+        "GPIO",
+        "hikcamera",
+        "imshow",
+        "lightbars",
+        "livox",
+        "Madgwick's",
+        "Mayhony's",
+        "NOLINTNEXTLINE",
+        "omni",
+        "PLUGINLIB",
+        "Quaterniond",
+        "rclcpp",
+        "rclpy",
+        "respawn",
+        "RMCS",
+        "RMUC",
+        "RMUL",
+        "Robo",
+        "rosdep",
+        "rviz",
+        "setpoint",
+        "sourcedir",
+        "supercap",
+        "uart",
+        "urdf",
+        "vruntime",
+        "xacro"
+    ]
+}

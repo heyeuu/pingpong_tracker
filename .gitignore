@@ -1,0 +1,60 @@
+# ------------------------------------
+# ROS 2 Colcon Build Directories
+# These are generated and should be ignored
+# ------------------------------------
+build/
+install/
+log/
+.colcon_workspace
+
+# ------------------------------------
+# Generated Files and Python Cache
+# ------------------------------------
+# Python
+__pycache__/
+*.pyc
+
+# Clangd and language server caches
+.cache/
+
+# ------------------------------------
+# IDE and Editor-specific Files
+# ------------------------------------
+# VSCode
+# .vscode/
+.vscode/*.log
+.vscode/settings.json
+
+# Emacs and other text editors
+*~
+.#*
+
+# QtCreator
+qtcreator-*
+*.user
+
+# ------------------------------------
+# Project-specific Generated Files and Logs
+# ------------------------------------
+# Hik camera log files
+MvFGSdkLog
+MvSdkLog
+
+# Recording files
+record/
+
+# ------------------------------------
+# Security-related Files
+# Never commit private keys!
+# ------------------------------------
+id_rsa
+id_rsa.pub
+
+# ------------------------------------
+# Operating System files
+# ------------------------------------
+.DS_Store
+*.swp
+
+# Temporary workspace
+develop_ws/
