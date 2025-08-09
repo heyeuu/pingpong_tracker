@@ -120,12 +120,15 @@ TODO
 ```
 #### 确认设备接入
 
-可以使用 `lsusb` 确定 [下位机](https://github.com/Alliance-Algorithm/rmcs_slave) 是否已接入，若已接入，则 `lsusb` 输出类似：
+可以使用 `lsusb`  确定相机是否已接入，若已接入，则 `lsusb` 输出类似：
 
 ```
-TODO
-Bus 001 Device 004: ID a11c:75f3 Alliance RoboMaster Team. RMCS Slave v2.1.2
-TODO
+Bus 004 Device 004: ID f622:0001 MindVision SUA133GC
+```
+
+```bash
+echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="f622", ATTR{idProduct}=="0001", MODE="0666", GROUP="plugdev"' | sudo tee /etc/udev/rules.d/95-mindvision.rules && 
+sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 TODOTODOTODO
 
