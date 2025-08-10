@@ -58,3 +58,5 @@ id_rsa.pub
 
 # Temporary workspace
 develop_ws/
+
+.devcontainer/tmp/

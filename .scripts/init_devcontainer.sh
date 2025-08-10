@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+
 echo "Starting container initialization..."
 
 echo "Updating git submodules..."

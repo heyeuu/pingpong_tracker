@@ -40,7 +40,7 @@ pingpong_tracker
 ├── Dockerfile                      # Dev Container 的 Dockerfile
 ├── pingpong_tracker_ws/            # ROS 2 工作空间
 │   └── src/                        # 源码目录
-│       ├── ros2_mindvision_camera/ # Git 子模块，MindVision 相机驱动
+│       ├── ros2_mindvision_camera/ # Git 子模块，MindVision 相机驱动,已经封装成一个ros2节点
 │       └── TODO  # RODO
 └── README.md                       # 本文件
 

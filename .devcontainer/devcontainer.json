@@ -15,10 +15,22 @@
             "source": "/tmp/.X11-unix",
             "target": "/tmp/.X11-unix",
             "type": "bind"
+        },
+        {
+            "source": "/dev/dri",
+            "target": "/dev/dri",
+            "type": "bind"
+        },
+        {
+            "source": "${localEnv:XAUTHORITY}",
+            "target": "/home/developer/.Xauthority",
+            "type": "bind"
         }
     ],
     "containerEnv": {
-        "DISPLAY": "${localEnv:DISPLAY}"
+        "DISPLAY": "${localEnv:DISPLAY}",
+        "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
+        "XAUTHORITY": "/home/developer/.Xauthority"
     },
     "runArgs": [
         "--network=host"
@@ -40,10 +52,10 @@
                 "mhutchie.git-graph"
             ],
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "fish",
+                "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
                     "fish": {
-                        "path": "fish"
+                        "path": "bash"
                     }
                 }
             }

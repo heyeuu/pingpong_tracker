@@ -1,38 +1,51 @@
 # 使用 ROS Humble 基础镜像
 FROM ros:humble-ros-base
 
+# Set timezone and non-interactive mode
+ENV TZ=Asia/Shanghai \
+    DEBIAN_FRONTEND=noninteractive
 # 切换为 root 用户以安装软件包
 USER root
 
-# 更新并安装所有必要的依赖
-RUN apt-get update && apt-get install -y \
-    # 安装终端和通用开发工具 
+# ----------------------------------------------------
+# 第1步：安装通用依赖和构建工具
+# ----------------------------------------------------
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    # ===== 1. 基础系统工具 =====
+    sudo \
+    usbutils \
     fish \
+    vim \
+    wget \
+    gnupg \
+    ca-certificates \
+    # ===== 2. 开发与构建工具 =====
     build-essential \
     ninja-build \
+    libc6-dev \
     git \
-    sudo \
-    # ROS 构建工具
+    # ===== 3. ROS 2 核心工具 =====
     python3-colcon-common-extensions \
     python3-rosdep \
-    python3-colorama python3-dpkt \
-    # 项目的系统依赖
-    libusb-1.0-0-dev \
-    #安装特定版本的Clangd和GCC(TODO)先把版本写死
-    clangd-14 \
-    # 你的ROS包及其依赖
+    python3-colorama \
+    ros-humble-launch-ros \
     ros-humble-sensor-msgs \
+    # ===== 4. 相机与图像处理 =====
+    libusb-1.0-0-dev \
+    ros-humble-camera-info-manager \
+    ros-humble-camera-calibration \
     ros-humble-cv-bridge \
+    ros-humble-image-transport \
+    ros-humble-image-transport-plugins \
+    ros-humble-image-tools \
+    # ===== 5. GUI 与调试工具 =====
     ros-humble-rqt \
     ros-humble-rqt-common-plugins \
     ros-humble-rqt-image-view \
-    ros-humble-image-transport \
-    ros-humble-image-transport-plugins \
-    ros-humble-camera-info-manager \
-    ros-humble-camera-calibration \
-    ros-humble-image-tools \
-    ros-humble-launch-ros \
-    && rm -rf /var/lib/apt/lists/*
+    # ===== 6. 开发辅助工具=====
+    clangd-15 \
+    python3-dpkt \
+    software-properties-common
 
 # 创建非 root 用户
 ARG USERNAME=developer
