@@ -12,6 +12,7 @@ USER root
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     # 基础系统工具 (为了开发方便)
     sudo fish vim wget gnupg ca-certificates unzip net-tools iputils-ping ripgrep htop fzf \
+    usbutils net-tools iputils-ping \
     # 开发与构建工具
     build-essential ninja-build libc6-dev git \
     # ROS 2 核心工具
@@ -35,6 +36,7 @@ ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
+    usermod -aG sudo $USERNAME && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
@@ -55,15 +57,18 @@ ENV TZ=Asia/Shanghai \
 
 USER root
 
-# 安装运行 ROS 节点所需的最小依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    # 增加 sudo 和一些基础工具，方便在 final 镜像中调试
+    sudo \
+    iputils-ping \
+    vim \
+    # 项目运行时所需的其他包
     ros-humble-sensor-msgs \
     ros-humble-launch-ros \
     ros-humble-cv-bridge \
     ros-humble-image-transport \
     ros-humble-camera-info-manager \
     libusb-1.0-0-dev \
-    # 项目运行时可能需要的其他包
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 创建非 root 用户
@@ -71,8 +76,11 @@ ARG USERNAME=developer
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
+# 创建非 root 用户，并配置 sudo
 RUN groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
+    # 添加到 sudo 组
+    usermod -aG sudo $USERNAME && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
