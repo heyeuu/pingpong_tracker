@@ -1,68 +1,89 @@
-# 使用 ROS Humble 基础镜像
-FROM ros:humble-ros-base
+# ====================================================
+# 阶段 1: builder - 你的开发环境
+# ====================================================
+FROM ros:humble-ros-base as builder
 
-# Set timezone and non-interactive mode
 ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
-# 切换为 root 用户以安装软件包
+
 USER root
 
-# ----------------------------------------------------
-# 第1步：安装通用依赖和构建工具
-# ----------------------------------------------------
+# 安装所有开发和构建工具，以及项目依赖
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-    # ===== 1. 基础系统工具 =====
-    sudo \
-    usbutils \
-    fish \
-    vim \
-    wget \
-    gnupg \
-    ca-certificates \
-    # ===== 2. 开发与构建工具 =====
-    build-essential \
-    ninja-build \
-    libc6-dev \
-    git \
-    # ===== 3. ROS 2 核心工具 =====
-    python3-colcon-common-extensions \
-    python3-rosdep \
-    python3-colorama \
-    ros-humble-launch-ros \
-    ros-humble-sensor-msgs \
-    # ===== 4. 相机与图像处理 =====
+    # 基础系统工具 (为了开发方便)
+    sudo fish vim wget gnupg ca-certificates unzip net-tools iputils-ping ripgrep htop fzf \
+    # 开发与构建工具
+    build-essential ninja-build libc6-dev git \
+    # ROS 2 核心工具
+    python3-colcon-common-extensions python3-rosdep python3-colorama ros-humble-launch-ros \
+    ros-humble-sensor-msgs ros-humble-rviz2 \
+    # 相机驱动与图像处理的核心依赖
     libusb-1.0-0-dev \
     ros-humble-camera-info-manager \
     ros-humble-camera-calibration \
-    ros-humble-cv-bridge \
-    ros-humble-image-transport \
-    ros-humble-image-transport-plugins \
-    ros-humble-image-tools \
-    # ===== 5. GUI 与调试工具 =====
-    ros-humble-rqt \
-    ros-humble-rqt-common-plugins \
-    ros-humble-rqt-image-view \
-    # ===== 6. 开发辅助工具=====
-    clangd-15 \
-    python3-dpkt \
-    software-properties-common
+    ros-humble-cv-bridge ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-image-tools \
+    # GUI 工具 (如果你需要在容器内运行 rviz2 或 rqt)
+    ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-image-view \
+    # 开发辅助工具
+    clangd-15 python3-dpkt software-properties-common \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 创建非 root 用户
 ARG USERNAME=developer
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-# 添加用户组并创建用户
 RUN groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
-    # 允许该用户使用 sudo 且无需密码。
-    # 这将创建一个文件，告诉 sudoers 规则允许此用户无密码运行任何命令。
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
 
-# 切换到非 root 用户
 USER $USERNAME
-# 设置工作目录
-WORKDIR /workspaces/pingpong_tracker
-# 设置入口点为 bash，以便容器启动后进入交互式 shell
-CMD ["/bin/bash"]
+# 设置工作空间路径
+WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
+# 在这里，你的项目代码会被挂载进来，进行开发和编译
+# 这里的 /workspaces/pingpong_tracker/pingpong_tracker_ws 对应于主机上的 pingpong_tracker/pingpong_tracker_ws
+
+
+# ====================================================
+# 阶段 2: final - 你的部署环境
+# ====================================================
+FROM ros:humble-ros-base as final
+
+ENV TZ=Asia/Shanghai \
+    DEBIAN_FRONTEND=noninteractive
+
+USER root
+
+# 安装运行 ROS 节点所需的最小依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-humble-sensor-msgs \
+    ros-humble-launch-ros \
+    ros-humble-cv-bridge \
+    ros-humble-image-transport \
+    ros-humble-camera-info-manager \
+    libusb-1.0-0-dev \
+    # 项目运行时可能需要的其他包
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 创建非 root 用户
+ARG USERNAME=developer
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
+    echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME
+
+# 从 builder 阶段复制编译好的 ROS 工作空间
+# 注意：复制源路径为 /workspaces/pingpong_tracker
+# 因为主机上的项目根目录被挂载到这个位置
+COPY --from=builder --chown=$USERNAME:$USERNAME /workspaces/pingpong_tracker /workspaces/pingpong_tracker
+
+USER $USERNAME
+# 设置工作空间路径
+WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
+
+# 容器启动时，执行你的 ROS launch 文件
+CMD ["/bin/bash", "-c"]

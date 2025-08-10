@@ -3,6 +3,9 @@
     "dockerFile": "../Dockerfile",
     "context": "..",
     "workspaceFolder": "/workspaces/pingpong_tracker",
+    "build": {
+        "target": "builder"
+    },
     "remoteUser": "developer",
     "privileged": true,
     "mounts": [
@@ -23,14 +26,14 @@
         },
         {
             "source": "${localEnv:XAUTHORITY}",
-            "target": "/home/developer/.Xauthority",
+            "target": "${localEnv:XAUTHORITY}",
             "type": "bind"
         }
     ],
     "containerEnv": {
         "DISPLAY": "${localEnv:DISPLAY}",
         "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
-        "XAUTHORITY": "/home/developer/.Xauthority"
+        "XAUTHORITY": "${localEnv:XAUTHORITY}"
     },
     "runArgs": [
         "--network=host"
@@ -49,21 +52,29 @@
                 // Code spell checking
                 "streetsidesoftware.code-spell-checker",
                 // Git enhancements
-                "mhutchie.git-graph"
+                "mhutchie.git-graph",
+                //docker
+                "ms-azuretools.vscode-docker"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
-                    "fish": {
+                    "bash": {
                         "path": "bash"
+                    },
+                    "zsh": {
+                        "path": "zsh"
+                    },
+                    "fish": {
+                        "path": "fish"
                     }
                 }
             }
         }
     },
     "postCreateCommand": [
-        "sh",
+        "bash",
         "-c",
-        "chmod +x ./.scripts/* && ./.scripts/init_devcontainer.sh"
+        "chmod +x ./.scripts/* && . /opt/ros/humble/setup.bash && ./.scripts/init_devcontainer.sh"
     ]
 }
