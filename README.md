@@ -109,7 +109,7 @@ cp .vscode/settings.default.json .vscode/settings.json
 编写代码并编译完成后，可以使用：
 
 ```bash
-# 在运行 ROS 2 程序前，请先配置环境
+# 在运行 ROS 2 程序前，请先配置环境,你可以将其写到~/.bash.rc等来偷懒
 source pingpong_tracker_ws/install/setup.bash
 
 # 使用 Launch 文件启动完整的系统,ros编译运行的那一套
@@ -135,6 +135,31 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 TODOTODOTODO
 
+##标定方法
+###单目
+运行相机节点后再开一个终端运行camera_calibration节点,在终端中输入:
+```
+source pingpong_tracker_ws/install/setup.bash
+ros2 launch mindvision_camera mv_launch.py
+
+ros2 run <your_camera_package> <your_camera_node>
+(e.g.)
+ros2 run camera_calibration cameracalibrator --ros-args --remap image:=/image_raw -- --size 7x5 --square 0.03
+
+```
+###双目
+TODO
+
+```
+source pingpong_tracker_ws/install/setup.bash
+ros2 launch mindvision_camera mv_launch.py
+
+ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo/left/image_raw --remap right:=/my_stereo/right/image_raw -- --size <NxM> --square <size_in_meters>
+
+
+
+
+```
 ## 工作流程
 
 1.    在 Dev Container 中修改代码。

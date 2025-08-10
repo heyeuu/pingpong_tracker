@@ -41,6 +41,7 @@ MvFGSdkLog
 MvSdkLog
 
 # Recording files
+Camera/
 record/
 
 # ------------------------------------
