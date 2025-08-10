@@ -46,6 +46,8 @@ WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
 # 在这里，你的项目代码会被挂载进来，进行开发和编译
 # 这里的 /workspaces/pingpong_tracker/pingpong_tracker_ws 对应于主机上的 pingpong_tracker/pingpong_tracker_ws
 
+COPY --chown=$USERNAME:$USERNAME .scripts/*.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/*.sh
 
 # ====================================================
 # 阶段 2: final - 你的部署环境

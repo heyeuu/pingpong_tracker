@@ -91,11 +91,14 @@ cp .vscode/settings.default.json .vscode/settings.json
 
 ### Step 4：构建
 
-在 VSCode 终端中输入：
+你可以在终端中输入
+```
+./.scripts/脚本的名称
+(e.g.build-pingpong.sh)
+```
+（TODO，好像没有很优雅）
 
-TODO
-
-目前你可以手动运行`./.scripts/build-pingpong.sh`脚本，将在路径 `pingpong_tracker_ws` 下开始构建代码。
+也可以手动运行`./.scripts/build-pingpong.sh`脚本，将在路径 `pingpong_tracker_ws` 下开始构建代码。
 ```
 ./.scripts/build-pingpong.sh
 ```
@@ -109,15 +112,14 @@ TODO
 # 在运行 ROS 2 程序前，请先配置环境
 source pingpong_tracker_ws/install/setup.bash
 
-# 使用 Launch 文件启动完整的系统
-TODO
+# 使用 Launch 文件启动完整的系统,ros编译运行的那一套
+ros2 launch ...
+#或 使用指令来执行launch脚本
+[shell] launch.sh
+
+（好像不优雅）TODO
 ```
-在本机上运行代码
-(ros包，所以ros编译运行的那一套也能用)
-(你可以使用)
-```
-TODO
-```
+
 #### 确认设备接入
 
 可以使用 `lsusb`  确定相机是否已接入，若已接入，则 `lsusb` 输出类似：
@@ -126,6 +128,7 @@ TODO
 Bus 004 Device 004: ID f622:0001 MindVision SUA133GC
 ```
 
+在<span style="color:red; background-color:#FFFF00; font-weight:bold">本机 </span>输入以下命令来确保你可以从容器中访问usb设备:
 ```bash
 echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="f622", ATTR{idProduct}=="0001", MODE="0666", GROUP="plugdev"' | sudo tee /etc/udev/rules.d/95-mindvision.rules && 
 sudo udevadm control --reload-rules && sudo udevadm trigger
