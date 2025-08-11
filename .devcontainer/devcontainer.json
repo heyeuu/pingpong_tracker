@@ -20,11 +20,6 @@
             "type": "bind"
         },
         {
-            "source": "/dev/dri",
-            "target": "/dev/dri",
-            "type": "bind"
-        },
-        {
             "source": "${localEnv:XAUTHORITY}",
             "target": "${localEnv:XAUTHORITY}",
             "type": "bind"
@@ -57,7 +52,7 @@
                 "ms-azuretools.vscode-docker"
             ],
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.defaultProfile.linux": "zsh",
                 "terminal.integrated.profiles.linux": {
                     "bash": {
                         "path": "bash"

@@ -4,51 +4,61 @@
 Continuously updating...
 
 ## 目录
-- [项目概览](#项目概览)
-- [技术栈](#技术栈)
 - [项目结构](#项目结构)
 - [快速开始](#快速开始)
 - [工作流程](#工作流程)
 - [许可证](#许可证)
 
-## 项目概览
-本项目包含一个 ROS 2 工作空间`pingpong_tracker_ws`，用于实现基于视觉的乒乓球追踪功能。其核心组件包括：
-1.  **`pingpong_tracker_ws/src/ros2_mindvision_camera`**：一个 ROS 2 包，作为与 MindVision 工业相机交互的驱动。它负责从相机捕获图像，并将图像数据发布到 ROS 2 网络上。
-
-2.  **Dev Container 环境**：项目配置了 Dockerfile 和 devcontainer.json，提供一个预配置好的 Ubuntu 22.04 + ROS 2 Humble 环境，确保所有依赖项和工具链都已安装。
-
-TODO
-
-## 技术栈
-
--   **ROS 2 Humble**：核心机器人框架。
--   **Docker**：用于创建隔离的、可复现的开发环境。
--   **C++**：主要编程语言，用于高性能的图像处理节点。
--   **Python**：用于编写 ROS 2 启动文件和脚本。
--   **OpenCV**：强大的计算机视觉库，用于图像处理和球体检测。TODO
--   **MindVision SDK**：用于与 MindVision 工业相机进行通信。
--   **TODO**:
-
-
 ## 项目结构
-pingpong_tracker
-├── .devcontainer/                  # Dev Container 配置目录
-│   └── devcontainer.json           # VS Code Dev Container 配置文件
-├── .scripts/                       # 自动化脚本目录
-│   ├── build-pingpong.sh           # 构建 ROS 2 工作空间的脚本
-│   └── init_devcontainer.sh        # 初始化容器环境的脚本
-├── Dockerfile                      # Dev Container 的 Dockerfile
-├── pingpong_tracker_ws/            # ROS 2 工作空间
-│   └── src/                        # 源码目录
-│       ├── ros2_mindvision_camera/ # Git 子模块，MindVision 相机驱动,已经封装成一个ros2节点
-│       └── TODO  # RODO
-└── README.md                       # 本文件
-
+```
+pingpong_tracker_ws/
+├── build/                 # 由colcon自动生成
+├── install/               # 由colcon自动生成
+├── log/                   # 由ROS 2自动生成
+└── src/
+    ├── camera_driver/       # 包1：摄像头驱动模块**
+    │   ├── include/
+    │   │   └── camera_driver/
+    │   │       └── mv_camera_component.hpp      # Composable Node 类定义
+    │   ├── src/
+    │   │   ├── mv_camera_component.cpp          # Composable Node 类实现
+    │   │   └── mv_camera_standalone_main.cpp    # 独立运行的main函数
+    │   ├── CMakeLists.txt
+    │   └── package.xml
+    │
+    ├── vision_pipeline/     # 包2：视觉处理模块**
+    │   ├── include/
+    │   │   └── vision_pipeline/
+    │   │       ├── deep_learning_component.hpp  # Composable Node 类定义
+    │   │       ├── kalman_filter_component.hpp  # Composable Node 类定义
+    │   │       └── shared_data_types.hpp        # 共享的数据结构
+    │   ├── src/
+    │   │   ├── deep_learning_component.cpp      # 深度学习组件类实现
+    │   │   ├── kalman_filter_component.cpp      # 卡尔曼滤波组件类实现
+    │   │   ├── dl_standalone_main.cpp           # 独立运行的main函数
+    │   │   └── kf_standalone_main.cpp           # 独立运行的main函数
+    │   ├── models/
+    │   │   └── yolov8.onnx
+    │   ├── CMakeLists.txt
+    │   └── package.xml
+    │
+    └── pingpong_tracker_bringup/  # 包3：系统启动和配置模块**
+        ├── launch/
+        │   ├── debug_dl.launch.py               # 用于单独调试深度学习的launch文件
+        │   ├── debug_kf.launch.py               # 用于单独调试卡尔曼滤波的launch文件
+        │   └── tracker.launch.py                # 用于高性能部署的launch文件
+        └── config/
+            ├── camera_params.yaml
+            ├── dl_params.yaml
+            └── kf_params.yaml
+        ├── CMakeLists.txt
+        └── package.xml
+```
 ## 快速开始
 
 ### 前置条件
 -   安装 [Git](https://git-scm.com/)。
--   安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/)（适用于 Windows/macOS）或 [Docker Engine](https://docs.docker.com/engine/install/)(适用于 Linux)。TODO
+-   安装 [Docker] TODO
 -   安装 [Visual Studio Code](https://code.visualstudio.com/)。
 -   安装 VS Code 的 [Dev Containers 扩展](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)。
 TODO
@@ -156,9 +166,6 @@ ros2 launch mindvision_camera mv_launch.py
 
 ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo/left/image_raw --remap right:=/my_stereo/right/image_raw -- --size <NxM> --square <size_in_meters>
 
-
-
-
 ```
 ## 工作流程
 
@@ -169,6 +176,14 @@ ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo
 3.    如果需要运行，执行 source 命令并使用 ros2 launch 启动节点。
 
 4.  使用 git add、git commit 和 git push 将你的更改同步到远程仓库。
+
+## TODO LIST
+
+- [ ] 把整体的框架搭建出来
+- [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
+- [ ] 搭建完框架再说
+
+---
 
 ## 许可证
 本项目使用 **MIT 许可证**。请查看 [LICENSE](LICENSE) 文件了解更多详情。
