@@ -1,5 +1,5 @@
 {
-    "name": "Pingpong ROS2 Dev",
+    "name": "pingpong_tracker-dev",
     "dockerFile": "../Dockerfile",
     "context": "..",
     "workspaceFolder": "/workspaces/pingpong_tracker",

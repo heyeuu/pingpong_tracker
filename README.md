@@ -66,14 +66,14 @@ TODO
 ### Step 1：克隆并打开仓库
 克隆仓库，注意需要使用 `recurse-submodules` 以克隆子模块：
 
-```bash
+```
 #克隆本仓库,初次克隆会自动克隆子模块
 git clone https://github.com/heyeuu/pingpong_tracker.git
 #克隆子模块
 git clone --recurse-submodules https://github.com/heyeuu/pingpong_tracker.git
 ```
 在VSCode中打开仓库:
-```bash
+```
 code ./pingpong_tracker
 ```
 ### Step 1：获取镜像并进入容器
@@ -118,18 +118,10 @@ cp .vscode/settings.default.json .vscode/settings.json
 
 编写代码并编译完成后，可以使用：
 
-```bash
-# 在运行 ROS 2 程序前，请先配置环境,你可以将其写到~/.bash.rc等来偷懒
-source pingpong_tracker_ws/install/setup.bash
-
-# 使用 Launch 文件启动完整的系统,ros编译运行的那一套
-ros2 launch ...
-#或 使用指令来执行launch脚本
-[shell] launch.sh
-
-（好像不优雅）TODO
+```zsh
+launch.sh
 ```
-
+运行     （好像不优雅）TODO
 #### 确认设备接入
 
 可以使用 `lsusb`  确定相机是否已接入，若已接入，则 `lsusb` 输出类似：
@@ -139,7 +131,7 @@ Bus 004 Device 004: ID f622:0001 MindVision SUA133GC
 ```
 
 在<span style="color:red; background-color:#FFFF00; font-weight:bold">本机 </span>输入以下命令来确保你可以从容器中访问usb设备:
-```bash
+```
 echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="f622", ATTR{idProduct}=="0001", MODE="0666", GROUP="plugdev"' | sudo tee /etc/udev/rules.d/95-mindvision.rules && 
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
@@ -149,7 +141,7 @@ TODOTODOTODO
 ###单目
 运行相机节点后再开一个终端运行camera_calibration节点,在终端中输入:
 ```
-source pingpong_tracker_ws/install/setup.bash
+source pingpong_tracker_ws/install/setup.zsh
 ros2 launch mindvision_camera mv_launch.py
 
 ros2 run <your_camera_package> <your_camera_node>
@@ -161,7 +153,7 @@ ros2 run camera_calibration cameracalibrator --ros-args --remap image:=/image_ra
 TODO
 
 ```
-source pingpong_tracker_ws/install/setup.bash
+source pingpong_tracker_ws/install/setup.zsh
 ros2 launch mindvision_camera mv_launch.py
 
 ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo/left/image_raw --remap right:=/my_stereo/right/image_raw -- --size <NxM> --square <size_in_meters>

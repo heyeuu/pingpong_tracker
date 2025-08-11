@@ -43,59 +43,10 @@ RUN groupadd --gid $USER_GID $USERNAME && \
 USER $USERNAME
 # 设置工作空间路径
 WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
-# 在这里，你的项目代码会被挂载进来，进行开发和编译
-# 这里的 /workspaces/pingpong_tracker/pingpong_tracker_ws 对应于主机上的 pingpong_tracker/pingpong_tracker_ws
 
 # Install oh my zsh, change theme to af-magic and setup environment of zsh
 RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" && \
     sed -i 's/ZSH_THEME=\"[a-z0-9\-]*\"/ZSH_THEME="af-magic"/g' ~/.zshrc && \
     echo 'export PATH=${PATH}:/workspaces/pingpong_tracker/.scripts' >> ~/.zshrc
 
-# ====================================================
-# 阶段 2: final - 你的部署环境
-# ====================================================
-# FROM ros:humble-ros-base as final
-
-# ENV TZ=Asia/Shanghai \
-#     DEBIAN_FRONTEND=noninteractive
-
-# USER root
-
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     # 增加 sudo 和一些基础工具，方便在 final 镜像中调试
-#     sudo \
-#     iputils-ping \
-#     vim \
-#     # 项目运行时所需的其他包
-#     ros-humble-sensor-msgs \
-#     ros-humble-launch-ros \
-#     ros-humble-cv-bridge \
-#     ros-humble-image-transport \
-#     ros-humble-camera-info-manager \
-#     libusb-1.0-0-dev \
-#     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# # 创建非 root 用户
-# ARG USERNAME=developer
-# ARG USER_UID=1000
-# ARG USER_GID=$USER_UID
-
-# # 创建非 root 用户，并配置 sudo
-# RUN groupadd --gid $USER_GID $USERNAME && \
-#     useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
-#     # 添加到 sudo 组
-#     usermod -aG sudo $USERNAME && \
-#     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-#     chmod 0440 /etc/sudoers.d/$USERNAME
-
-# # 从 builder 阶段复制编译好的 ROS 工作空间
-# # 注意：复制源路径为 /workspaces/pingpong_tracker
-# # 因为主机上的项目根目录被挂载到这个位置
-# COPY --from=builder --chown=$USERNAME:$USERNAME /workspaces/pingpong_tracker /workspaces/pingpong_tracker
-
-# USER $USERNAME
-# # 设置工作空间路径
-# WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
-
-# # 容器启动时，执行你的 ROS launch 文件
 # CMD ["/bin/bash", "-c"]
