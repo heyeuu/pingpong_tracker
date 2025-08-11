@@ -104,7 +104,7 @@ cp .vscode/settings.default.json .vscode/settings.json
 你可以在终端中输入
 ```
 ./.scripts/脚本的名称
-(e.g.build-pingpong.sh)
+(e.g.build.sh)
 ```
 （TODO，好像没有很优雅）
 
@@ -173,6 +173,7 @@ ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo
 
 - [ ] 把整体的框架搭建出来
 - [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
+- [ ] ros环境导入自动化
 - [ ] 搭建完框架再说
 
 ---
