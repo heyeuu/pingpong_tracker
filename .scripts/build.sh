@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-cd ./pingpong_tracker_ws
+cd /workspaces/pingpong_tracker/pingpong_tracker_ws
 
 source /opt/ros/humble/setup.bash
 
