@@ -30,7 +30,7 @@ ament_target_dependencies(deep_learning_component
   OpenCV
 )
 # 设置 C++ 标准。
-target_compile_features(deep_learning_component PUBLIC cxx_std_17)
+target_compile_features(deep_learning_component PUBLIC cxx_std_20)
 # 设置包含路径。
 target_include_directories(deep_learning_component PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

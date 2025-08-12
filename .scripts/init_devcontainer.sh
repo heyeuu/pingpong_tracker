@@ -3,9 +3,6 @@ set -e
 
 echo "Starting container initialization..."
 
-echo "Updating git submodules..."
-git submodule update --init --recursive
-
 echo "Initializing and updating rosdep..."
 rosdep update
 
