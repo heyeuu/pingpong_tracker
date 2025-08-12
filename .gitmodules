@@ -1,3 +1,0 @@
-[submodule "pingpong_tracker_ws/src/ros2_mindvision_camera"]
-	path = pingpong_tracker_ws/src/ros2_mindvision_camera
-	url = git@github.com:heyeuu/ros2_mindvision_camera.git
