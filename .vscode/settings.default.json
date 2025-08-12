@@ -43,11 +43,24 @@
         "urdf",
         "vruntime",
         "xacro",
+        "mindvision",
+        "mvsdk",
+        "libusb",
+        "xacro",
         "usbutils",
         "pingpong",
         "clangd",
         "twxs",
         "mhutchie",
-        "debugpy"
+        "debugpy",
+        "pylance",
+        "heyeuu",
+        "buildtool",
+        "rosidl",
+        "schematypens",
+        "cpplint",
+        "GNUCXX",
+        "Wextra",
+        "Wpedantic"
     ]
 }
