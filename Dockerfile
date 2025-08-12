@@ -1,7 +1,7 @@
 # ====================================================
 # 阶段 1: builder - 你的开发环境
 # ====================================================
-FROM ros:humble-ros-base as builder
+FROM ros:humble-ros-base AS builder
 
 ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
@@ -9,7 +9,9 @@ ENV TZ=Asia/Shanghai \
 USER root
 
 # 安装所有开发和构建工具，以及项目依赖
-RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \ 
+    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     # 基础系统工具 (为了开发方便)
     sudo fish zsh vim wget gnupg ca-certificates unzip net-tools iputils-ping ripgrep htop fzf gnutls-bin\
     usbutils \
@@ -22,6 +24,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
     ros-humble-rviz2 ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-image-view \
     # 相机驱动与图像处理的核心依赖
     libusb-1.0-0-dev \
+    libopencv-dev\
     ros-humble-camera-info-manager \
     ros-humble-camera-calibration \
     ros-humble-cv-bridge ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-image-tools \
