@@ -5,6 +5,7 @@
 #include <CameraApi.h>
 
 // ROS
+#include <ament_index_cpp/get_package_share_directory.hpp>
 #include <camera_info_manager/camera_info_manager.hpp>
 #include <image_transport/image_transport.hpp>
 #include <rclcpp/logging.hpp>
@@ -13,6 +14,7 @@
 #include <sensor_msgs/msg/image.hpp>
 
 // C++ system
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <thread>
@@ -28,6 +30,15 @@ public:
     RCLCPP_INFO(this->get_logger(), "Starting MVCameraNode!");
 
     CameraSdkInit(1);
+
+    std::filesystem::path camera_data_dir =
+      this->declare_parameter("camera_data_directory", "/tmp/camera_records");
+
+    if (!std::filesystem::exists(camera_data_dir)) {
+      std::filesystem::create_directory(camera_data_dir);
+    }
+    RCLCPP_INFO(this->get_logger(), "Record path= %s", camera_data_dir.c_str());
+    CameraSetDataDirectory(camera_data_dir.c_str());
 
     // 枚举设备，并建立设备列表
     int i_camera_counts = 1;

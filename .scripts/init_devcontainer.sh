@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Starting container initialization..."
-
 echo "Initializing and updating rosdep..."
 rosdep update
 
