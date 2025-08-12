@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -e
 
 source pingpong_tracker_ws/install/setup.bash

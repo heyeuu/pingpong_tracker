@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -e
 
 cd /workspaces/pingpong_tracker/pingpong_tracker_ws
