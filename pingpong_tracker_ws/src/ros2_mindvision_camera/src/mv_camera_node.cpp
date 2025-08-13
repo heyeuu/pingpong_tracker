@@ -82,6 +82,8 @@ public:
     // 触发帧以后才会更新图像。
     CameraPlay(h_camera_);
 
+    last_fps_time_ = this->now();
+
     CameraSetIspOutFormat(h_camera_, CAMERA_MEDIA_TYPE_RGB8);
 
     // Create camera publisher
@@ -134,6 +136,18 @@ public:
           // 直到其他线程中调用CameraReleaseImageBuffer来释放了buffer
           CameraReleaseImageBuffer(h_camera_, pby_buffer_);
           fail_conut_ = 0;
+
+          frame_count_++;
+          rclcpp::Time current_time = this->now();
+          auto elapsed_time = (current_time - last_fps_time_).seconds();
+          if (elapsed_time >= 1.0) {
+            double fps = static_cast<double>(frame_count_) / elapsed_time;
+            RCLCPP_INFO(this->get_logger(), "帧率: %.2f FPS", fps);
+
+            frame_count_ = 0;
+            last_fps_time_ = current_time;
+          }
+
         } else {
           RCLCPP_WARN(this->get_logger(), "Failed to get image buffer, status = %d", status);
           fail_conut_++;
@@ -303,6 +317,8 @@ private:
 
   image_transport::CameraPublisher camera_pub_;
 
+  int frame_count_ = 0;
+  rclcpp::Time last_fps_time_;
   // RGB Gain
   int r_gain_, g_gain_, b_gain_;
 
