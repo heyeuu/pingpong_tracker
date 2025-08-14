@@ -159,15 +159,10 @@ ros2 launch mindvision_camera mv_launch.py
 ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo/left/image_raw --remap right:=/my_stereo/right/image_raw -- --size <NxM> --square <size_in_meters>
 
 ```
-## 工作流程
-
-1.    在 Dev Container 中修改代码。
-
-2.   每次修改后，运行 ./.scripts/build-pingpong.sh 重新编译。
-
-3.    如果需要运行，执行 source 命令并使用 ros2 launch 启动节点。
-
-4.  使用 git add、git commit 和 git push 将你的更改同步到远程仓库。
+#### you can 使用foxglove来可视化你的话题
+```
+ros2 launch foxglove_bridge foxglove_bridge_launch.xml 
+```
 
 ## TODO LIST
 

@@ -9,9 +9,14 @@ ENV TZ=Asia/Shanghai \
 USER root
 
 # 安装所有开发和构建工具，以及项目依赖
-RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
-    sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \ 
-    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+#     sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list  
+RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common wget gnupg && \
+    sudo add-apt-repository universe && \
+    sudo wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://mirrors.tuna.tsinghua.edu.cn/ros2/ubuntu/ $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+RUN  apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     # 基础系统工具 (为了开发方便)
     sudo fish zsh vim wget gnupg ca-certificates unzip net-tools iputils-ping ripgrep htop fzf gnutls-bin\
     usbutils \
@@ -21,7 +26,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/source
     python3-colcon-common-extensions python3-rosdep python3-colorama \
     ros-humble-launch-ros \
     ros-humble-sensor-msgs \ 
-    ros-humble-rviz2 ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-image-view \
+    ros-humble-rviz2 ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-image-view ros-humble-foxglove-bridge \
     # 相机驱动与图像处理的核心依赖
     libusb-1.0-0-dev \
     libopencv-dev\

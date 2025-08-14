@@ -31,14 +31,12 @@ public:
 
     CameraSdkInit(1);
 
-    std::filesystem::path camera_data_dir =
-      this->declare_parameter("camera_data_directory", "/tmp/camera_records");
-
-    if (!std::filesystem::exists(camera_data_dir)) {
-      std::filesystem::create_directory(camera_data_dir);
+    camera_data_path_ = this->declare_parameter("camera_data_path_", "/tmp/camera_data");
+    if (!std::filesystem::exists(camera_data_path_)) {
+      std::filesystem::create_directories(camera_data_path_);
     }
-    RCLCPP_INFO(this->get_logger(), "Record path= %s", camera_data_dir.c_str());
-    CameraSetDataDirectory(camera_data_dir.c_str());
+    RCLCPP_INFO(this->get_logger(), "Record path= %s", camera_data_path_.c_str());
+    CameraSetDataDirectory(camera_data_path_.c_str());
 
     // 枚举设备，并建立设备列表
     int i_camera_counts = 1;
@@ -188,7 +186,7 @@ private:
       t_capability_.sExposeDesc.uiExposeTimeMin * exposure_line_time;
     param_desc.integer_range[0].to_value =
       t_capability_.sExposeDesc.uiExposeTimeMax * exposure_line_time;
-    double exposure_time = this->declare_parameter("exposure_time", 5000, param_desc);
+    double exposure_time = this->declare_parameter("exposure_time", 1000, param_desc);
     CameraSetExposureTime(h_camera_, exposure_time);
     RCLCPP_INFO(this->get_logger(), "Exposure time = %f", exposure_time);
 
@@ -332,6 +330,8 @@ private:
   std::thread capture_thread_;
 
   OnSetParametersCallbackHandle::SharedPtr params_callback_handle_;
+
+  std::filesystem::path camera_data_path_;
 };
 
 }  // namespace mindvision_camera
