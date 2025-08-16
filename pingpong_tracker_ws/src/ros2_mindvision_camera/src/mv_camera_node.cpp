@@ -133,7 +133,7 @@ public:
           // 否则再次调用CameraGetImageBuffer时，程序将被挂起一直阻塞，
           // 直到其他线程中调用CameraReleaseImageBuffer来释放了buffer
           CameraReleaseImageBuffer(h_camera_, pby_buffer_);
-          fail_conut_ = 0;
+          fail_count_ = 0;
 
           frame_count_++;
           rclcpp::Time current_time = this->now();
@@ -148,10 +148,10 @@ public:
 
         } else {
           RCLCPP_WARN(this->get_logger(), "Failed to get image buffer, status = %d", status);
-          fail_conut_++;
+          fail_count_++;
         }
 
-        if (fail_conut_ > 5) {
+        if (fail_count_ > 5) {
           RCLCPP_FATAL(this->get_logger(), "Failed to get image buffer, exit!");
           rclcpp::shutdown();
         }
@@ -326,7 +326,7 @@ private:
   std::unique_ptr<camera_info_manager::CameraInfoManager> camera_info_manager_;
   sensor_msgs::msg::CameraInfo camera_info_msg_;
 
-  int fail_conut_ = 0;
+  int fail_count_ = 0;
   std::thread capture_thread_;
 
   OnSetParametersCallbackHandle::SharedPtr params_callback_handle_;

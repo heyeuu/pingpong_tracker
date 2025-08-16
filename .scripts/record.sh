@@ -1,4 +1,6 @@
-#!/bin/bash
+#! /bin/bash
+
+source /opt/ros/humble/setup.bash
 
 BASE_OUTPUT_PATH="/tmp/camera_recordings/"
 

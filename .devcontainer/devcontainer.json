@@ -18,17 +18,17 @@
             "source": "/tmp/.X11-unix",
             "target": "/tmp/.X11-unix",
             "type": "bind"
-        },
-        {
-            "source": "${localEnv:XAUTHORITY}",
-            "target": "${localEnv:XAUTHORITY}",
-            "type": "bind"
         }
+        // {
+        //     "source": "${localEnv:XAUTHORITY}",
+        //     "target": "${localEnv:XAUTHORITY}",
+        //     "type": "bind"
+        // }
     ],
     "containerEnv": {
         "DISPLAY": "${localEnv:DISPLAY}",
-        "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
-        "XAUTHORITY": "${localEnv:XAUTHORITY}"
+        "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}"
+        // "XAUTHORITY": "${localEnv:XAUTHORITY}"
     },
     "runArgs": [
         "--network=host"
