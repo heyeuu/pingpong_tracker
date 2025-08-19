@@ -22,9 +22,9 @@ add_executable(predictor_node
   src/predictor_node.cpp
   src/kalman_filter.cpp)
 
-ament_target_dependencies(predictor_node rclcpp sensor_msgs cv_bridge geometry_msgs)
+ament_target_dependencies(predictor_node rclcpp sensor_msgs cv_bridge geometry_msgs OpenCV)
 
-target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
+#target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
 
 install(TARGETS
 predictor_node
