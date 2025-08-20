@@ -5,45 +5,34 @@
 class KalmanFilter {
 public:
   KalmanFilter() {
-    int state_dim = 6;
+    int state_dim = 4;
 
-    int measurement_dim = 3;
+    int measurement_dim = 2;
 
     int control_dim = 0;
 
     kf_.init(state_dim, measurement_dim, control_dim);
 
-    kf_.transitionMatrix =
-        (cv::Mat_<float>(6, 6) << 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
-         0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1);
+    kf_.transitionMatrix = (cv::Mat_<float>(4, 4) << 1, 0, 1, 0, 0, 1, 0, 1, 0,
+                            0, 1, 0, 0, 0, 0, 1);
 
-    kf_.measurementMatrix = (cv::Mat_<float>(3, 6) << 1, 0, 0, 0, 0, 0, 0, 1, 0,
-                             0, 0, 0, 0, 0, 1, 0, 0, 0);
+    kf_.measurementMatrix = (cv::Mat_<float>(2, 4) << 1, 0, 0, 0, 0, 1, 0, 0);
 
     cv::setIdentity(kf_.processNoiseCov, cv::Scalar::all(1e-2));
-
     cv::setIdentity(kf_.measurementNoiseCov, cv::Scalar::all(1e-1));
 
-    kf_.statePost = (cv::Mat_<float>(6, 1) << 0, 0, 0, 0, 0, 0, 0);
+    kf_.statePost = (cv::Mat_<float>(4, 1) << 0, 0, 0, 0);
   };
 
-  cv::Point3f predict() {
+  cv::Point2f predict() {
     cv::Mat prediction = kf_.predict();
-
-    return {prediction.at<float>(0, 0), prediction.at<float>(1, 0),
-            prediction.at<float>(2, 0)};
+    return {prediction.at<float>(0, 0), prediction.at<float>(1, 0)};
   }
 
-  void update(const cv::Point3f &measurement) {
+  void update(const cv::Point2f &measurement) {
     cv::Mat measurement_mat =
-        (cv::Mat_<float>(3, 1) << measurement.x, measurement.y, measurement.z);
-
+        (cv::Mat_<float>(2, 1) << measurement.x, measurement.y);
     kf_.correct(measurement_mat);
-  }
-
-  cv::Point3f getFilteredPosition() const {
-    return {kf_.statePost.at<float>(0, 0), kf_.statePost.at<float>(1, 0),
-            kf_.statePost.at<float>(2, 0)};
   }
 
 private:

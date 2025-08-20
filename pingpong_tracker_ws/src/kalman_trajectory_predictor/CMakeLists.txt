@@ -8,7 +8,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-## Export compile commands for clangd
+# # Export compile commands for clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # find dependencies
@@ -18,24 +18,32 @@ find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(rclcpp_components REQUIRED)
 
 include_directories(include)
 
-add_executable(predictor_node
+add_library(kalman_trajectory_predictor SHARED
   src/predictor_node.cpp
+  src/image_processor.cpp
   src/kalman_filter.cpp
-  )
-
-  add_executable(image_publisher_node
-  src/image_publisher_node.cpp
 )
 
-ament_target_dependencies(predictor_node 
-  rclcpp 
-  sensor_msgs 
+ament_target_dependencies(kalman_trajectory_predictor
+  rclcpp
+  sensor_msgs
   cv_bridge
-  geometry_msgs 
-  OpenCV)
+  geometry_msgs
+  OpenCV
+  rclcpp_components
+)
+
+rclcpp_components_register_nodes(kalman_trajectory_predictor
+  "kalman_trajectory_predictor::PredictorNode"
+)
+
+add_executable(image_publisher_node
+  src/image_publisher_node.cpp
+)
 
 ament_target_dependencies(image_publisher_node
   rclcpp
@@ -44,31 +52,44 @@ ament_target_dependencies(image_publisher_node
   OpenCV
 )
 
-#target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
-
-install(TARGETS
-  predictor_node
-  image_publisher_node
-  DESTINATION  lib/${PROJECT_NAME})
-
+# target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
+# install(TARGETS
+# predictor_node
+# image_publisher_node
+# DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY
   include/
   DESTINATION include
 )
 
-ament_export_dependencies(rclcpp sensor_msgs cv_bridge geometry_msgs OpenCV)
+install(TARGETS
+  kalman_trajectory_predictor
+  image_publisher_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
+ament_export_dependencies(
+  rclcpp
+  sensor_msgs
+  cv_bridge
+  geometry_msgs
+  OpenCV
+  rclcpp_components
+)
+
+# ament_export_dependencies(rclcpp sensor_msgs cv_bridge geometry_msgs  OpenCV)
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
+
   # the following line skips the linter which checks for copyrights
   # comment the line when a copyright and license is added to all source files
   set(ament_cmake_copyright_FOUND TRUE)
+
   # the following line skips cpplint (only works in a git repo)
   # comment the line when this package is in a git repo and when
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
-
 
 ament_package()

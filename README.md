@@ -187,7 +187,7 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 ## TODO LIST
 
 - [x] 快速原型测试
-- [ ] 重构这一坨代码
+- [ ] 重构这一坨代码(持续进行)
 - [ ] ros环境导入自动化
 - [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
 
