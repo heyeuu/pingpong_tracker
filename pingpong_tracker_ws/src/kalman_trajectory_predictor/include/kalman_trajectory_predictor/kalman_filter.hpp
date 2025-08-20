@@ -30,8 +30,8 @@ public:
   cv::Point3f predict() {
     cv::Mat prediction = kf_.predict();
 
-    return cv::Point3f(prediction.at<float>(0, 0), prediction.at<float>(1, 0),
-                       prediction.at<float>(2, 0));
+    return {prediction.at<float>(0, 0), prediction.at<float>(1, 0),
+            prediction.at<float>(2, 0)};
   }
 
   void update(const cv::Point3f &measurement) {

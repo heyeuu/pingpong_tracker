@@ -15,7 +15,7 @@ public:
   PredictorNode() : Node("predictor_node") {
     subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
         "camera/image_raw", 10,
-        [this](const sensor_msgs::msg::Image::SharedPtr msg) {
+        [this](const sensor_msgs::msg::Image::SharedPtr& msg) {
           this->image_callback(msg);
         });
     publisher_ =

@@ -57,10 +57,9 @@ pingpong_tracker_ws/
 ## 快速开始
 
 ### 前置条件
--   安装 [Git](https://git-scm.com/)。
--   安装 [Docker] TODO
--   安装 [Visual Studio Code](https://code.visualstudio.com/)。
--   安装 VS Code 的 [Dev Containers 扩展](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)。
+- x86-64 架构
+- 任意 Linux 发行版
+- 安装 Git,Docker,Visual Studio Code
 TODO
 
 ### Step 1：克隆并打开仓库
@@ -114,7 +113,7 @@ cp .vscode/settings.default.json .vscode/settings.json
 ```
 构建完毕后，基于 `clangd` 的 `C++` 代码提示将可用。此时可以正常编写代码。
 
-### Step 5 (Optional)：运行
+### Step 5 ：运行
 
 编写代码并编译完成后，可以使用：
 
@@ -122,6 +121,16 @@ cp .vscode/settings.default.json .vscode/settings.json
 launch.sh
 ```
 运行     （好像不优雅）TODO
+
+
+发布静态测试图片
+```
+ros2 run kalman_trajectory_predictor image_publisher_node
+```
+预测轨迹
+```
+ros2 run kalman_trajectory_predictor predictor_node
+```
 #### 确认设备接入
 
 可以使用 `lsusb`  确定相机是否已接入，若已接入，则 `lsusb` 输出类似：
@@ -163,13 +172,24 @@ ros2 run camera_calibration cameracalibrator --ros-args --remap left:=/my_stereo
 ```
 ros2 launch foxglove_bridge foxglove_bridge_launch.xml 
 ```
+## 目前实现的功能
+1. 相机驱动与图像发布
+- 实现相机设备的驱动功能
+- 通过ROS topic实时发布图像数据流
+<img src="./docs/images/camera.jpg" alt="test_camera" />
+
+2. 快速原型开发
+- 乒乓球识别：实现静态图像中乒乓球的检测与识别
+- 卡尔曼滤波：应用卡尔曼滤波算法进行轨迹预测
+- 流程验证：建立完整的识别-跟踪-预测处理流程
+<img src="./docs/images/test_kalman.png" alt="test_kalman_filter" />
 
 ## TODO LIST
 
-- [ ] 把整体的框架搭建出来
-- [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
+- [x] 快速原型测试
+- [ ] 重构这一坨代码
 - [ ] ros环境导入自动化
-- [ ] 搭建完框架再说
+- [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
 
 ---
 

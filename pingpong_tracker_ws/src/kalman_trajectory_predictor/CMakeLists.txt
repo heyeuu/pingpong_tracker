@@ -23,15 +23,33 @@ include_directories(include)
 
 add_executable(predictor_node
   src/predictor_node.cpp
-  src/kalman_filter.cpp)
+  src/kalman_filter.cpp
+  )
 
-ament_target_dependencies(predictor_node rclcpp sensor_msgs cv_bridge geometry_msgs OpenCV)
+  add_executable(image_publisher_node
+  src/image_publisher_node.cpp
+)
+
+ament_target_dependencies(predictor_node 
+  rclcpp 
+  sensor_msgs 
+  cv_bridge
+  geometry_msgs 
+  OpenCV)
+
+ament_target_dependencies(image_publisher_node
+  rclcpp
+  sensor_msgs
+  cv_bridge
+  OpenCV
+)
 
 #target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
 
 install(TARGETS
-predictor_node
-DESTINATION  lib/${PROJECT_NAME})
+  predictor_node
+  image_publisher_node
+  DESTINATION  lib/${PROJECT_NAME})
 
 install(DIRECTORY
   include/
