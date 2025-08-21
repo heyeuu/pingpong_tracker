@@ -1,0 +1,4 @@
+kalman_trajectory_predictor:
+  ros__parameters:
+    hsv_lower_bound: [0,100,100]
+    hsv_upper_bound: [10,255,255]

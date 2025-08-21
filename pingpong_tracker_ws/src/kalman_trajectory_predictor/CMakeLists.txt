@@ -22,13 +22,13 @@ find_package(rclcpp_components REQUIRED)
 
 include_directories(include)
 
-add_library(kalman_trajectory_predictor SHARED
+add_library(${PROJECT_NAME} SHARED
   src/predictor_node.cpp
   src/image_processor.cpp
   src/kalman_filter.cpp
 )
 
-ament_target_dependencies(kalman_trajectory_predictor
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
   sensor_msgs
   cv_bridge
@@ -37,7 +37,7 @@ ament_target_dependencies(kalman_trajectory_predictor
   rclcpp_components
 )
 
-rclcpp_components_register_nodes(kalman_trajectory_predictor
+rclcpp_components_register_nodes(${PROJECT_NAME}
   "kalman_trajectory_predictor::PredictorNode"
 )
 
@@ -52,20 +52,20 @@ ament_target_dependencies(image_publisher_node
   OpenCV
 )
 
-# target_link_libraries(predictor_node ${OpenCV_LIBRARIES})
-# install(TARGETS
-# predictor_node
-# image_publisher_node
-# DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY
   include/
   DESTINATION include
 )
 
 install(TARGETS
-  kalman_trajectory_predictor
+  ${PROJECT_NAME}
   image_publisher_node
-  DESTINATION lib/${PROJECT_NAME}
+  DESTINATION lib
+)
+
+install(
+  DIRECTORY launch config
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_export_dependencies(
