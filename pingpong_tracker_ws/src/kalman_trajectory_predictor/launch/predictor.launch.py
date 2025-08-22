@@ -20,6 +20,11 @@ def generate_launch_description():
                 plugin='kalman_trajectory_predictor::PredictorNode',
                 name='predictor_node',
                 parameters=[params_file]
+            ),
+            ComposableNode(
+                package='kalman_trajectory_predictor',
+                plugin='kalman_trajectory_predictor::ImageVisualizerNode',
+                name='image_visualizer_node',
             )
         ],
         output='screen',

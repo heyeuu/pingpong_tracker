@@ -1,40 +1,35 @@
-#pragma once
+#ifndef KALMAN_TRAJECTORY_PREDICTOR__KALMAN_FILTER_HPP_
+#define KALMAN_TRAJECTORY_PREDICTOR__KALMAN_FILTER_HPP_
 
-#include "opencv2/opencv.hpp"
+#include <eigen3/Eigen/Dense>
 
-class KalmanFilter {
+namespace kalman_trajectory_predictor
+{
+
+class KalmanFilter
+{
 public:
-  KalmanFilter() {
-    int state_dim = 4;
+  KalmanFilter();
 
-    int measurement_dim = 2;
+  // 核心方法：根据新的测量值更新状态
+  void update(const Eigen::VectorXd& z);
 
-    int control_dim = 0;
+  // 核心方法：预测下一时刻的状态
+  void predict();
 
-    kf_.init(state_dim, measurement_dim, control_dim);
-
-    kf_.transitionMatrix = (cv::Mat_<float>(4, 4) << 1, 0, 1, 0, 0, 1, 0, 1, 0,
-                            0, 1, 0, 0, 0, 0, 1);
-
-    kf_.measurementMatrix = (cv::Mat_<float>(2, 4) << 1, 0, 0, 0, 0, 1, 0, 0);
-
-    cv::setIdentity(kf_.processNoiseCov, cv::Scalar::all(1e-2));
-    cv::setIdentity(kf_.measurementNoiseCov, cv::Scalar::all(1e-1));
-
-    kf_.statePost = (cv::Mat_<float>(4, 1) << 0, 0, 0, 0);
-  };
-
-  cv::Point2f predict() {
-    cv::Mat prediction = kf_.predict();
-    return {prediction.at<float>(0, 0), prediction.at<float>(1, 0)};
-  }
-
-  void update(const cv::Point2f &measurement) {
-    cv::Mat measurement_mat =
-        (cv::Mat_<float>(2, 1) << measurement.x, measurement.y);
-    kf_.correct(measurement_mat);
-  }
+  // 获取当前状态
+  Eigen::VectorXd getState() const;
 
 private:
-  cv::KalmanFilter kf_;
+  // 这里可以定义你的状态转移矩阵、协方差矩阵等
+  Eigen::MatrixXd A_; 
+  Eigen::MatrixXd H_; 
+  Eigen::MatrixXd Q_; 
+  Eigen::MatrixXd R_; 
+  Eigen::MatrixXd P_; 
+  Eigen::VectorXd x_; 
 };
+
+} // namespace kalman_trajectory_predictor
+
+#endif // KALMAN_TRAJECTORY_PREDICTOR__KALMAN_FILTER_HPP_

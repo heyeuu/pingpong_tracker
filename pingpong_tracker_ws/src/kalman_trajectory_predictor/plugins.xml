@@ -1,0 +1,16 @@
+<library path="libkalman_trajectory_predictor.so">
+  <class name="kalman_trajectory_predictor::PredictorNode"
+         type="kalman_trajectory_predictor::PredictorNode"
+         base_class_type="rclcpp::Node">
+    <description>
+      A node that predicts ball trajectory using a Kalman Filter.
+    </description>
+  </class>
+  <class name="kalman_trajectory_predictor::ImageVisualizerNode"
+         type="kalman_trajectory_predictor::ImageVisualizerNode"
+         base_class_type="rclcpp::Node">
+    <description>
+      A node that visualizes the predicted ball position.
+    </description>
+  </class>
+</library>

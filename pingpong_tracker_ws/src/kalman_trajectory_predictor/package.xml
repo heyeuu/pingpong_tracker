@@ -3,7 +3,7 @@
 <package format="3">
   <name>kalman_trajectory_predictor</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>A ROS2 package for pingpong ball trajectory tracking and prediction.</description>
   <maintainer email="2829004293@qq.com">developer</maintainer>
   <license>TODO: License declaration</license>
 
@@ -13,8 +13,6 @@
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
-  <depend>image_transport</depend>
-  <depend>rclcpp_components</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
