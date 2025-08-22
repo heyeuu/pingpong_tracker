@@ -16,43 +16,27 @@ pingpong_tracker_ws/
 ├── install/               # 由colcon自动生成
 ├── log/                   # 由ROS 2自动生成
 └── src/
-    ├── camera_driver/       # 包1：摄像头驱动模块**
-    │   ├── include/
-    │   │   └── camera_driver/
-    │   │       └── mv_camera_component.hpp      # Composable Node 类定义
-    │   ├── src/
-    │   │   ├── mv_camera_component.cpp          # Composable Node 类实现
-    │   │   └── mv_camera_standalone_main.cpp    # 独立运行的main函数
-    │   ├── CMakeLists.txt
-    │   └── package.xml
+    ├── ros2_mindvision_camera/       
     │
-    ├── vision_pipeline/     # 包2：视觉处理模块**
-    │   ├── include/
-    │   │   └── vision_pipeline/
-    │   │       ├── deep_learning_component.hpp  # Composable Node 类定义
-    │   │       ├── kalman_filter_component.hpp  # Composable Node 类定义
-    │   │       └── shared_data_types.hpp        # 共享的数据结构
-    │   ├── src/
-    │   │   ├── deep_learning_component.cpp      # 深度学习组件类实现
-    │   │   ├── kalman_filter_component.cpp      # 卡尔曼滤波组件类实现
-    │   │   ├── dl_standalone_main.cpp           # 独立运行的main函数
-    │   │   └── kf_standalone_main.cpp           # 独立运行的main函数
-    │   ├── models/
-    │   │   └── yolov8.onnx
-    │   ├── CMakeLists.txt
-    │   └── package.xml
-    │
-    └── pingpong_tracker_bringup/  # 包3：系统启动和配置模块**
+    ├── kalman_trajectory_predictor/
+        ├── include/kalman_trajectory_predictor/
+        │   ├── ball_detector.hpp             // 核心模块1: 图像处理头文件
+        │   ├── kalman_filter.hpp             // 核心模块2: 卡尔曼滤波头文件
+        │   ├── coordinate_converter.hpp      // 核心模块3: 坐标转换头文件
+        │   └── pnp_solver.hpp                // 核心模块4: PnP求解头文件
+        ├── src/
+        │   ├── lib/
+        │   │   ├── ball_detector.cpp         // 模块1实现
+        │   │   ├── kalman_filter.cpp         // 模块2实现
+        │   │   ├── coordinate_converter.cpp  // 模块3实现
+        │   │   └── pnp_solver.cpp            // 模块4实现
+        │   ├── ball_detector_node.cpp        // ROS2 节点1: 图像处理节点
+        │   ├── kalman_predictor_node.cpp     // ROS2 节点2: 卡尔曼预测节点
+        │   └── image_visualizer_node.cpp     // ROS2 节点3: 可视化节点
         ├── launch/
-        │   ├── debug_dl.launch.py               # 用于单独调试深度学习的launch文件
-        │   ├── debug_kf.launch.py               # 用于单独调试卡尔曼滤波的launch文件
-        │   └── tracker.launch.py                # 用于高性能部署的launch文件
-        └── config/
-            ├── camera_params.yaml
-            ├── dl_params.yaml
-            └── kf_params.yaml
-        ├── CMakeLists.txt
-        └── package.xml
+        │   └── predictor.launch.py           // 启动文件
+        ├── CMakeLists.txt                    // 项目构建配置
+        └── package.xml                       // 项目元数据和依赖
 ```
 ## 快速开始
 
