@@ -1,8 +1,16 @@
+#include "rclcpp_components/register_node_macro.hpp"
 #include <rclcpp/rclcpp.hpp>
 
-int main(int argc, char* argv[]) {
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<rclcpp::Node>("kalman_predictor_node"));
-    rclcpp::shutdown();
-    return 0;
-}
+namespace kalman_trajectory_predictor {
+
+class KalmanPredictorNode : public rclcpp::Node {
+public:
+    explicit KalmanPredictorNode(const rclcpp::NodeOptions& options)
+        : Node("kalman_predictor_node", options) {
+        // 这里是空的
+    }
+};
+
+} // namespace kalman_trajectory_predictor
+
+RCLCPP_COMPONENTS_REGISTER_NODE(kalman_trajectory_predictor::KalmanPredictorNode)

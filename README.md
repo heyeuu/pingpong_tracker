@@ -23,7 +23,8 @@ pingpong_tracker_ws/
         │   ├── ball_detector.hpp             // 核心模块1: 图像处理头文件
         │   ├── kalman_filter.hpp             // 核心模块2: 卡尔曼滤波头文件
         │   ├── coordinate_converter.hpp      // 核心模块3: 坐标转换头文件
-        │   └── pnp_solver.hpp                // 核心模块4: PnP求解头文件
+        │   ├── pnp_solver.hpp                // 核心模块4: PnP求解头文件
+        │   └── image_publisher_node.hpp 
         ├── src/
         │   ├── lib/
         │   │   ├── ball_detector.cpp         // 模块1实现
@@ -32,7 +33,8 @@ pingpong_tracker_ws/
         │   │   └── pnp_solver.cpp            // 模块4实现
         │   ├── ball_detector_node.cpp        // ROS2 节点1: 图像处理节点
         │   ├── kalman_predictor_node.cpp     // ROS2 节点2: 卡尔曼预测节点
-        │   └── image_visualizer_node.cpp     // ROS2 节点3: 可视化节点
+        │   ├── image_visualizer_node.cpp     // ROS2 节点3: 可视化节点
+        │   └── image_publisher_node.cpp
         ├── launch/
         │   └── predictor.launch.py           // 启动文件
         ├── CMakeLists.txt                    // 项目构建配置
