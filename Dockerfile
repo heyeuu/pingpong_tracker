@@ -30,6 +30,7 @@ RUN  apt-get update && apt-get upgrade -y && apt-get install -y --no-install-rec
     # 相机驱动与图像处理的核心依赖
     libusb-1.0-0-dev \
     libopencv-dev\
+    libeigen3-dev \
     ros-humble-camera-info-manager \
     ros-humble-camera-calibration \
     ros-humble-cv-bridge ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-image-tools \
