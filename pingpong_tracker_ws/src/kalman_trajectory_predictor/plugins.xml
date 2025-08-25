@@ -1,18 +1,6 @@
-<library path="libkalman_trajectory_predictor_core">
+<class_list>
   <class type="kalman_trajectory_predictor::ImagePublisherNode"
-         base_class_type="rclcpp::Node">
+    base_class_type="rclcpp::Node">
     <description>The Image Publisher Node as a ROS2 component.</description>
   </class>
-  <class type="kalman_trajectory_predictor::BallDetectorNode"
-         base_class_type="rclcpp::Node">
-    <description>The Ball Detector Node as a ROS2 component.</description>
-  </class>
-  <class type="kalman_trajectory_predictor::KalmanPredictorNode"
-         base_class_type="rclcpp::Node">
-    <description>The Kalman Predictor Node as a ROS2 component.</description>
-  </class>
-  <class type="kalman_trajectory_predictor::ImageVisualizerNode"
-         base_class_type="rclcpp::Node">
-    <description>The Image Visualizer Node as a ROS2 component.</description>
-  </class>
-</library>
+</class_list>

@@ -1,16 +1,14 @@
 # ====================================================
 # 阶段 1: builder - 你的开发环境
 # ====================================================
-FROM ros:humble-ros-base AS builder
+FROM ros:humble AS builder
 
 ENV TZ=Asia/Shanghai \
     DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-# 安装所有开发和构建工具，以及项目依赖
-# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
-#     sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list  
+# 安装所有开发和构建工具，以及非 ROS 的项目依赖
 RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common wget gnupg && \
     sudo add-apt-repository universe && \
     sudo wget https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -O /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -22,18 +20,11 @@ RUN  apt-get update && apt-get upgrade -y && apt-get install -y --no-install-rec
     usbutils \
     # 开发与构建工具
     build-essential ninja-build libc6-dev git \
-    # ROS 2 核心工具
-    python3-colcon-common-extensions python3-rosdep python3-colorama \
-    ros-humble-launch-ros \
-    ros-humble-sensor-msgs \ 
-    ros-humble-rviz2 ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-image-view ros-humble-foxglove-bridge \
-    # 相机驱动与图像处理的核心依赖
+    # 这里只保留非 ROS 的依赖，例如 libusb-1.0-0-dev 和 libeigen3-dev
     libusb-1.0-0-dev \
     libopencv-dev\
     libeigen3-dev \
-    ros-humble-camera-info-manager \
-    ros-humble-camera-calibration \
-    ros-humble-cv-bridge ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-image-tools \
+    ros-humble-foxglove-bridge\
     # 开发辅助工具
     clangd-15 python3-dpkt software-properties-common \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -56,6 +47,7 @@ WORKDIR /workspaces/pingpong_tracker/pingpong_tracker_ws
 # Install oh my zsh, change theme to af-magic and setup environment of zsh
 RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" && \
     sed -i 's/ZSH_THEME=\"[a-z0-9\-]*\"/ZSH_THEME="af-magic"/g' ~/.zshrc && \
-    echo 'export PATH=${PATH}:/workspaces/pingpong_tracker/.scripts' >> ~/.zshrc
+    echo 'export PATH=${PATH}:/workspaces/pingpong_tracker/.scripts' >> ~/.zshrc && \
+    echo 'source /opt/ros/humble/setup.zsh' >> ~/.zshrc
 
 # CMD ["/bin/bash", "-c"]

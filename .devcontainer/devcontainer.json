@@ -70,6 +70,6 @@
     "postCreateCommand": [
         "bash",
         "-c",
-        "chmod +x ./.scripts/* && . /opt/ros/humble/setup.bash && ./.scripts/init_devcontainer.sh"
+        "chmod +x ./.scripts/* && ./.scripts/init_devcontainer.sh"
     ]
 }
