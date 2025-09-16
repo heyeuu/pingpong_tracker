@@ -1,10 +1,9 @@
 {
     "name": "pingpong_tracker-dev",
-    "dockerFile": "../Dockerfile",
-    "context": "..",
     "workspaceFolder": "/workspaces/pingpong_tracker",
     "build": {
-        "target": "builder"
+        "dockerfile": "../Dockerfile",
+        "context": ".."
     },
     "remoteUser": "developer",
     "privileged": true,
@@ -70,6 +69,8 @@
     "postCreateCommand": [
         "bash",
         "-c",
-        "chmod +x ./.scripts/* && ./.scripts/init_devcontainer.sh"
+        // "chmod +x ./.scripts/* && ./.scripts/init.sh"
+        "chmod +x ./.scripts/* "
+
     ]
 }

@@ -6,6 +6,7 @@ echo "installing the dependencies..."
 
 sudo mkdir -p /etc/apt/keyrings/
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo gpg --dearmor | sudo tee /etc/apt/keyrings/ros2.gpg > /dev/null
+wget -qO - https://apt.llvm.org/llvm.sh | sudo bash -s -- 22
 
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get install gnupg
@@ -31,14 +32,16 @@ sudo apt install -y \
     libtbb-dev \
     libceres-dev \
     libdwarf-dev libbackward-cpp-dev\
-    binutils-dev  libdw-dev 
+    binutils-dev  libdw-dev \
+    clangd-22
 
-sudo ln -s /usr/include/libdwarf/libdwarf.h /usr/include/libdwarf.h 
-sudo ln -s /usr/include/libdwarf/dwarf.h /usr/include/dwarf.h
+sudo ln -sf /usr/bin/clangd-22 /usr/local/bin/clangd
+# sudo ln -s /usr/include/libdwarf/libdwarf.h /usr/include/libdwarf.h 
+# sudo ln -s /usr/include/libdwarf/dwarf.h /usr/include/dwarf.h
 
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
 sudo update-alternatives --config g++
 sudo update-alternatives --config gcc
 
-echo "dependencies installation complished！"
+echo "dependencies installation complished!"
