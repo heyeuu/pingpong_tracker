@@ -1,10 +1,6 @@
 #include <fmt/core.h>
 #include <yaml-cpp/yaml.h>
-
-#include <fstream>
 #include <opencv2/opencv.hpp>
-
-#include "tools/img_tools.hpp"
 
 const std::string keys =
   "{help h usage ? |                          | 输出命令行参数说明}"
@@ -17,7 +13,7 @@ std::vector<cv::Point3f> centers_3d(const cv::Size & pattern_size, const float c
 
   for (int i = 0; i < pattern_size.height; i++)
     for (int j = 0; j < pattern_size.width; j++)
-      centers_3d.push_back({j * center_distance, i * center_distance, 0});
+      centers_3d.emplace_back(j * center_distance, i * center_distance, 0);
 
   return centers_3d;
 }
