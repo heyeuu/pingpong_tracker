@@ -21,19 +21,6 @@ Continuously updating...
 - 安装 Git,Docker,Visual Studio Code
 TODO
 
-### Step 1：克隆并打开仓库
-克隆仓库，注意需要使用 `recurse-submodules` 以克隆子模块：
-
-```
-#克隆本仓库,初次克隆会自动克隆子模块
-git clone https://github.com/heyeuu/pingpong_tracker.git
-#克隆子模块
-git clone --recurse-submodules https://github.com/heyeuu/pingpong_tracker.git
-```
-在VSCode中打开仓库:
-```
-code ./pingpong_tracker
-```
 ### Step 1：获取镜像并进入容器
 #### method one:
 可自行使用 `Dockerfile` 构建，参见 [镜像构建指南](docs/zh-cn/build_docker_image.md),按 `Ctrl+Shift+P`，在弹出的菜单中选择 `Dev Containers: Reopen in Container`。
@@ -58,28 +45,17 @@ cp .vscode/settings.default.json .vscode/settings.json
 在拓展列表中，可以看到我们推荐使用的拓展正在安装，你也可以按需自行删减拓展。
 
 ### Step 4：构建
-
-你可以在终端中输入
+在`/workspaces/pingpong_tracker/pingpong_tracker_ws`下在终端中输入
 ```
-./.scripts/脚本的名称
-(e.g.build.sh)
+cmake -B build
+make -C build/ -j`nproc`
 ```
-（TODO，好像没有很优雅）
-
-也可以手动运行`./.scripts/build-pingpong.sh`脚本，将在路径 `pingpong_tracker_ws` 下开始构建代码。
-```
-./.scripts/build-pingpong.sh
-```
-构建完毕后，基于 `clangd` 的 `C++` 代码提示将可用。此时可以正常编写代码。
 
 ### Step 5 ：运行
 
 编写代码并编译完成后，可以使用：
 
-```zsh
-launch.sh
-```
-运行     （好像不优雅）TODO
+TODO
 
 #### 确认设备接入
 
@@ -96,7 +72,6 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 TODOTODOTODO
 
-##标定方法
 
 #### you can 使用foxglove来可视化你的话题
 ```
@@ -106,10 +81,14 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 TODO
 ## TODO LIST
 
-- [ ] 重构这一坨代码(持续进行)
+- [ ] 移除多余的依赖
 - [ ] 整理dockerfile，在一个base image的上构建develop image 和 deploy image，并筛选移除多余依赖
+- [ ] 修改calibration/split_video 中帧与姿态数据的对应（可用于从长视频中获得关键片段用于训练、标注或分析）
 
 ---
+
+#未来可能需要做的：
+- [ ] 手眼标定（用于视觉与运动系统协同）
 
 ## log
 重构中...
