@@ -124,7 +124,7 @@ void MindVision::try_open()
   }
 }
 
-void MindVision::close()
+void MindVision::close() const
 {
   if (handle_ == -1) return;
   CameraUnInit(handle_);
