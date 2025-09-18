@@ -2,10 +2,12 @@
 #define IO__MINDVISION_HPP
 
 #include <chrono>
-#include <opencv2/opencv.hpp>
 #include <thread>
 
+#include <opencv2/opencv.hpp>
+
 #include "CameraApi.h"
+
 #include "io/camera.hpp"
 #include "tools/thread_safe_queue.hpp"
 
