@@ -1,7 +1,6 @@
 #pragma once
 
 #include <deque>
-#include <iostream>
 #include <random>
 #include <vector>
 
@@ -26,7 +25,7 @@ public:
 
     void fit();
 
-    double sine_function(double t, double A, double omega, double phi, double C) {
+    static double sine_function(double t, double A, double omega, double phi, double C) {
         return A * std::sin(omega * t + phi) + C;
     }
 

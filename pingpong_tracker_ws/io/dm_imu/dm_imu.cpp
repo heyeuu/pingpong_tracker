@@ -3,14 +3,11 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
-#include <iostream>
-#include <mutex>
-#include <queue>
 #include <thread>
 
 #include "tools/crc.hpp"
 #include "tools/logger.hpp"
-#include "tools/math_tools.hpp"
+
 
 namespace io
 {
