@@ -15,6 +15,6 @@ Exiter::Exiter()
   exiter_inited_ = true;
 }
 
-bool Exiter::exit() const { return exit_; }
+bool  Exiter::exit() const { return exit_; }
 
 }  // namespace tools
