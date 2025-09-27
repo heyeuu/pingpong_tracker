@@ -22,6 +22,11 @@ Continuously updating...
 - [log](#log)
 - [许可证](#许可证)
 
+## 数据流图
+
+![数据流图](./docs/images/data_flow.png)
+<p align="center">数据流图</p>
+
 ## 软件架构
 
 ![软件架构](./docs/images/software_architecture.png)
@@ -45,6 +50,7 @@ PINGPONG_TRACKER
 │       ├── CMakeLists.txt   # Task-specific build config
 │       ├── identifer/
 │       ├── predictor/
+│       ├── pnp_solver/
 │       └── TODO
 ├── src/
 │   └── TODO
